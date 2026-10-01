@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Чек-лист проверки аккаунта</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent:#ff6b00;
+    --accent-soft:rgba(255,107,0,.10);
+    --accent-glow:rgba(255,107,0,.22);
+    --lav:#cec6f4;
+    --lav-soft:#f5f2fe;
+    --ink:#323232;
+    --ink-2:#565656;
+    --muted:#989595;
+    --line:#eaeaea;
+    --line-2:#d1d1d1;
+    --bg:#ffffff;
+    --radius-card:10px;
+    --radius-pill:30px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+    line-height:1.5;
+    padding:0 16px 72px;
+  }
+  .wrap{max-width:900px;margin:0 auto}
+
+  /* ---------- Верхняя полоса ---------- */
+  .topbar{
+    border-bottom:1px solid var(--line);
+    padding:18px 0;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;flex-wrap:wrap;
+  }
+  .logo{font-size:16px;font-weight:800;letter-spacing:.5px;text-transform:uppercase}
+  .logo b{color:var(--accent)}
+  .topbar .tag{
+    font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+    color:var(--muted);
+  }
+
+  /* ---------- Шапка ---------- */
+  .head{padding:44px 0 28px}
+  .eyebrow{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:1px;
+    text-transform:uppercase;color:var(--accent);margin:0 0 14px;
+  }
+  h1{
+    margin:0 0 14px;
+    font-size:52px;line-height:1.05;font-weight:800;
+    text-transform:uppercase;letter-spacing:-.01em;
+  }
+  h1 span{color:var(--accent);display:block}
+  .lead{margin:0;font-size:16px;color:var(--ink-2);max-width:60ch}
+
+  /* ---------- Поле компании ---------- */
+  .company{
+    margin:28px 0 0;
+    border:1px solid var(--line);
+    border-radius:var(--radius-card);
+    padding:22px 24px;
+    display:grid;grid-template-columns:1fr 260px;gap:20px;align-items:end;
+  }
+  .company .lbl{
+    display:block;font-size:12px;font-weight:700;letter-spacing:.5px;
+    text-transform:uppercase;color:var(--muted);margin:0 0 8px;
+  }
+  .company input{
+    width:100%;font:inherit;font-size:17px;font-weight:700;color:var(--ink);
+    padding:12px 14px;border:1px solid var(--line-2);border-radius:var(--radius-card);
+    background:#fff;transition:border-color .18s,box-shadow .18s;
+  }
+  .company input::placeholder{font-weight:400;color:#b9b5b5}
+  .company input:focus{
+    outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft);
+  }
+  .company .field-note{grid-column:1 / -1;font-size:13px;color:var(--muted);margin:0}
+
+  /* ---------- Сводка: круговая оценка ---------- */
+  .summary{
+    margin:18px 0 34px;
+    border:1px solid var(--line);border-radius:var(--radius-card);
+    padding:26px 28px;
+    display:flex;align-items:center;gap:36px;flex-wrap:wrap;
+  }
+  .gauge{position:relative;flex:0 0 auto;width:168px;height:168px}
+  .gauge svg{display:block;width:168px;height:168px;transform:rotate(-90deg)}
+  .gauge circle{fill:none;stroke-width:12}
+  .gauge .g-bg{stroke:#f1f1f1}
+  .gauge .g-fg{
+    stroke:url(#gaugeGrad);stroke-linecap:round;
+    transition:stroke-dashoffset .55s cubic-bezier(.4,0,.2,1);
+    filter:drop-shadow(0 0 6px var(--accent-glow));
+  }
+  .gauge .g-center{
+    position:absolute;inset:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:4px;text-align:center;
+  }
+  .gauge .g-pct{
+    font-size:40px;font-weight:800;line-height:1;letter-spacing:-.03em;
+    font-variant-numeric:tabular-nums;
+  }
+  .gauge .g-sub{
+    font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+    color:var(--muted);font-variant-numeric:tabular-nums;
+  }
+  .summary .who{
+    flex:1;min-width:220px;border-left:1px solid var(--line);padding-left:36px;
+    align-self:stretch;display:flex;flex-direction:column;justify-content:center;
+  }
+  .summary .who .cap{
+    font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+    color:var(--muted);margin-bottom:6px;
+  }
+  .summary .who .val{font-size:19px;font-weight:700;word-break:break-word}
+  .summary .who .val.empty{color:var(--line-2);font-weight:400}
+
+  /* ---------- Группы ---------- */
+  .group{margin-bottom:30px}
+  .group-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px}
+  .step{
+    font-size:13px;font-weight:800;color:var(--accent);
+    font-variant-numeric:tabular-nums;
+  }
+  .group-head h2{
+    margin:0;font-size:14px;font-weight:800;letter-spacing:.5px;
+    text-transform:uppercase;
+  }
+  .group-head .rule{flex:1;height:1px;background:var(--line)}
+  .group-head .tally{
+    font-size:12px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;
+  }
+
+  /* ---------- Пункт ---------- */
+  .item{
+    display:flex;gap:14px;align-items:flex-start;
+    border:1px solid var(--line);border-radius:var(--radius-card);
+    padding:15px 18px;margin-bottom:8px;cursor:pointer;
+    transition:border-color .18s,box-shadow .18s,background .18s,transform .12s;
+  }
+  .item:hover{border-color:var(--lav);box-shadow:0 6px 20px rgba(50,50,50,.06)}
+  .item:active{transform:scale(.997)}
+  .item:focus-visible{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+  .box{
+    flex:0 0 auto;width:22px;height:22px;margin-top:1px;border-radius:6px;
+    border:2px solid var(--line-2);background:#fff;position:relative;
+    transition:background .18s,border-color .18s;
+  }
+  .box::after{
+    content:"";position:absolute;left:6.5px;top:2.5px;width:5px;height:10px;
+    border:solid var(--ink);border-width:0 2.5px 2.5px 0;
+    transform:rotate(45deg) scale(.3);opacity:0;
+    transition:opacity .18s,transform .18s;
+  }
+  .item.done{background:var(--lav-soft);border-color:var(--lav)}
+  .item.done .box{background:var(--lav);border-color:var(--lav)}
+  .item.done .box::after{opacity:1;transform:rotate(45deg) scale(1)}
+  .item .body{flex:1;min-width:0}
+  .item .title{font-size:16px;font-weight:700;letter-spacing:-.01em}
+  .item .hint{margin-top:3px;font-size:13px;color:var(--muted)}
+  .item .num{
+    flex:0 0 auto;font-size:12px;font-weight:700;color:var(--muted);
+    font-variant-numeric:tabular-nums;margin-top:2px;
+  }
+  .item.done .num{color:#7c6fc4}
+  .item.done .title{color:var(--ink)}
+
+  /* ---------- Финал ---------- */
+  .done-strip{
+    display:none;margin-top:8px;padding:18px 22px;border-radius:var(--radius-card);
+    background:var(--accent-soft);border:1px solid var(--accent-glow);
+    color:var(--ink);font-size:14px;font-weight:800;letter-spacing:.5px;
+    text-transform:uppercase;
+  }
+  .done-strip.show{display:block;animation:pop .3s ease}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .actions{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}
+  button{
+    font:inherit;font-size:13px;font-weight:800;letter-spacing:.5px;
+    text-transform:uppercase;cursor:pointer;
+    border-radius:var(--radius-pill);padding:15px 30px;
+    border:1px solid var(--line-2);background:#fff;color:var(--ink);
+    transition:all .2s;
+  }
+  button:hover{border-color:var(--ink);box-shadow:0 6px 18px rgba(50,50,50,.08)}
+  button.primary{
+    background:var(--accent);color:#fff;border-color:var(--accent);
+    box-shadow:0 6px 18px var(--accent-glow);
+  }
+  button.primary:hover{background:#ef6200;border-color:#ef6200;box-shadow:0 10px 24px var(--accent-glow)}
+
+  @media (max-width:680px){
+    h1{font-size:34px}
+    .company{grid-template-columns:1fr}
+    .summary{gap:22px;padding:20px;flex-direction:column;align-items:flex-start}
+    .summary .who{
+      border-left:none;padding-left:0;border-top:1px solid var(--line);
+      padding-top:20px;width:100%;align-self:auto;
+    }
+    .gauge{width:148px;height:148px}
+    .gauge svg{width:148px;height:148px}
+    .gauge .g-pct{font-size:34px}
+  }
+  @media print{
+    body{padding:0;color:#000}
+    .actions,.topbar .tag{display:none}
+    .company input{border:none;padding:0;font-size:15px}
+    .item{break-inside:avoid;box-shadow:none}
+    .gauge .g-fg{filter:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="logo">MD<b>-</b>Insight <b>·</b> внутренний контроль</div>
+    <div class="tag">Проверка аккаунтов маркетплейсов</div>
+  </div>
+
+  <header class="head">
+    <p class="eyebrow">Контроль качества</p>
+    <h1><span>Чек-лист</span>проверки аккаунта</h1>
+    <p class="lead">Отметьте выполненные пункты — прогресс и название компании сохраняются в этом браузере. Готовый чек-лист можно распечатать или сохранить в PDF.</p>
+  </header>
+
+  <section class="company">
+    <div>
+      <label class="lbl" for="companyInput">Название компании</label>
+      <input id="companyInput" type="text" autocomplete="off" placeholder="Например: ООО «Ромашка»">
+    </div>
+    <div>
+      <label class="lbl" for="checklistDate">Дата проверки</label>
+      <input id="checklistDate" type="date">
+    </div>
+    <p class="field-note">Название подставляется в заголовок страницы и в печатную версию.</p>
+  </section>
+
+  <section class="summary">
+    <div class="gauge">
+      <svg viewBox="0 0 168 168" role="img" aria-labelledby="gaugeTitle">
+        <title id="gaugeTitle">Готовность проверки</title>
+        <defs>
+          <linearGradient id="gaugeGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#ff6b00"/>
+            <stop offset="100%" stop-color="#ff9a4d"/>
+          </linearGradient>
+        </defs>
+        <circle class="g-bg" cx="84" cy="84" r="76"></circle>
+        <circle class="g-fg" id="gaugeArc" cx="84" cy="84" r="76"></circle>
+      </svg>
+      <div class="g-center">
+        <div class="g-pct" id="pctNum">0%</div>
+        <div class="g-sub"><span id="doneNum">0</span> из <span id="totalNum">10</span></div>
+      </div>
+    </div>
+    <div class="who">
+      <div class="cap">Проверяемая компания</div>
+      <div class="val empty" id="whoVal">не указана</div>
+    </div>
+  </section>
+
+  <div id="groups"></div>
+
+  <div class="done-strip" id="doneStrip">Проверка завершена — все пункты отмечены</div>
+
+  <div class="actions">
+    <button class="primary" id="printBtn">Распечатать →</button>
+    <button id="resetBtn">Сбросить отметки</button>
+  </div>
+</div>
+
+<script>
+const DATA = [
+  {
+    group: "Товары и витрина",
+    items: [
+      { t: "Товары размещены в нужном количестве",
+        h: "Сверьте число опубликованных позиций с планом размещения." },
+      { t: "Витрина (Showcase) включена",
+        h: "Убедитесь, что витрина активна и корректно отображается покупателям." }
+    ]
+  },
+  {
+    group: "Дизайн",
+    items: [
+      { t: "Дизайн для ПК-версии засчитан",
+        h: "Проверьте статус проверки десктопной версии дизайна." },
+      { t: "Дизайн для мобильной версии засчитан",
+        h: "Проверьте статус проверки мобильной версии дизайна." },
+      { t: "Плашка МД-Инсайт установлена во всех дизайнах",
+        h: "Проверьте каждый дизайн: плашка должна быть на месте." }
+    ]
+  },
+  {
+    group: "Профиль и контакты",
+    items: [
+      { t: "Профиль компании заполнен",
+        h: "Все обязательные поля профиля заполнены без пробелов." },
+      { t: "Контакты компании заполнены",
+        h: "Указан менеджер, добавлены фото и контактные данные." },
+      { t: "Фото, видео и сертификаты производства загружены",
+        h: "Медиа и документы производства добавлены в профиль компании." }
+    ]
+  },
+  {
+    group: "Качество и рейтинг",
+    items: [
+      { t: "Товары без блокировок, дублей и просадки рейтинга",
+        h: "Нет заблокированных позиций и дублей, рейтинг не занижен." }
+    ]
+  },
+  {
+    group: "Рекламное продвижение",
+    items: [
+      { t: "Продвижение проверено, клиент уведомлён",
+        h: "Если реклама запустилась автоматически — обязательно сообщите клиенту." }
+    ]
+  }
+];
+
+const KEY = "account-check-v2";
+const root = document.getElementById("groups");
+const doneNum = document.getElementById("doneNum");
+const pctNum = document.getElementById("pctNum");
+const gaugeArc = document.getElementById("gaugeArc");
+const totalNum = document.getElementById("totalNum");
+const R = 76;
+const CIRC = 2 * Math.PI * R;
+const strip = document.getElementById("doneStrip");
+const whoVal = document.getElementById("whoVal");
+const companyInput = document.getElementById("companyInput");
+const dateInput = document.getElementById("checklistDate");
+
+let state = {};
+let meta = {};
+try {
+  state = JSON.parse(localStorage.getItem(KEY) || "{}") || {};
+  meta = JSON.parse(localStorage.getItem(KEY + "-meta") || "{}") || {};
+} catch (e) { state = {}; meta = {}; }
+
+let index = 0;
+let startIdx = 0;
+DATA.forEach((g, gi) => {
+  const wrap = document.createElement("section");
+  wrap.className = "group";
+
+  const head = document.createElement("div");
+  head.className = "group-head";
+  head.innerHTML =
+    '<span class="step">' + String(gi + 1).padStart(2, "0") + '</span>' +
+    '<h2>' + g.group + '</h2>' +
+    '<div class="rule"></div>' +
+    '<span class="tally" data-tally="' + gi + '"></span>';
+  wrap.appendChild(head);
+
+  index = startIdx;
+  g.items.forEach(it => {
+    const id = index++;
+    const row = document.createElement("div");
+    row.className = "item";
+    row.setAttribute("role", "checkbox");
+    row.setAttribute("tabindex", "0");
+    row.setAttribute("aria-checked", "false");
+    row.dataset.id = id;
+    row.innerHTML =
+      '<span class="box"></span>' +
+      '<span class="body"><span class="title">' + it.t + '</span><span class="hint">' + it.h + '</span></span>' +
+      '<span class="num">' + String(id + 1).padStart(2, "0") + '</span>';
+
+    const toggle = () => { state[id] = !state[id]; persist(); render(); };
+    row.addEventListener("click", toggle);
+    row.addEventListener("keydown", e => {
+      if (e.key === " " || e.key === "Enter") { e.preventDefault(); toggle(); }
+    });
+    wrap.appendChild(row);
+  });
+  startIdx = index;
+  root.appendChild(wrap);
+});
+
+const TOTAL = startIdx;
+
+function persist(){
+  try {
+    localStorage.setItem(KEY, JSON.stringify(state));
+    localStorage.setItem(KEY + "-meta", JSON.stringify(meta));
+  } catch (e) {}
+}
+
+function render(){
+  let done = 0;
+  root.querySelectorAll(".item").forEach(r => {
+    const on = !!state[r.dataset.id];
+    r.classList.toggle("done", on);
+    r.setAttribute("aria-checked", on ? "true" : "false");
+    if (on) done++;
+  });
+
+  let s = 0;
+  DATA.forEach((g, gi) => {
+    const gDone = g.items.reduce((a, _, k) => a + (state[s + k] ? 1 : 0), 0);
+    s += g.items.length;
+    const t = root.querySelector('[data-tally="' + gi + '"]');
+    if (t) t.textContent = gDone + "/" + g.items.length;
+  });
+
+  const pct = TOTAL ? Math.round(done / TOTAL * 100) : 0;
+  doneNum.textContent = done;
+  totalNum.textContent = TOTAL;
+  pctNum.textContent = pct + "%";
+  gaugeArc.style.strokeDasharray = CIRC;
+  gaugeArc.style.strokeDashoffset = CIRC - CIRC * pct / 100;
+  strip.classList.toggle("show", done === TOTAL && TOTAL > 0);
+
+  const name = (companyInput.value || "").trim();
+  whoVal.textContent = name || "не указана";
+  whoVal.classList.toggle("empty", !name);
+  document.title = (name ? name + " — " : "") + "Чек-лист проверки аккаунта";
+}
+
+function loadMeta(){
+  companyInput.value = meta.company || "";
+  dateInput.value = meta.date || "";
+  render();
+}
+
+companyInput.addEventListener("input", () => {
+  meta.company = companyInput.value;
+  persist();
+  render();
+});
+dateInput.addEventListener("change", () => {
+  meta.date = dateInput.value;
+  persist();
+});
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  state = {};
+  persist();
+  render();
+});
+document.getElementById("printBtn").addEventListener("click", () => window.print());
+
+loadMeta();
+</script>
+</body>
+</html>
