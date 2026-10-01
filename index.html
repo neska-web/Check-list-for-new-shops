@@ -4,185 +4,278 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Чек-лист проверки аккаунта</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#f4f6fb;
-    --card:#ffffff;
-    --ink:#111827;
-    --muted:#6b7280;
-    --line:#e5e8f0;
-    --accent:#4f46e5;
-    --accent-2:#06b6d4;
-    --ok:#10b981;
-    --shadow:0 10px 30px rgba(17,24,39,.08);
+    --accent:#ff6b00;
+    --accent-soft:rgba(255,107,0,.10);
+    --accent-glow:rgba(255,107,0,.22);
+    --lav:#cec6f4;
+    --lav-soft:#f5f2fe;
+    --ink:#323232;
+    --ink-2:#565656;
+    --muted:#989595;
+    --line:#eaeaea;
+    --line-2:#d1d1d1;
+    --bg:#ffffff;
+    --radius-card:10px;
+    --radius-pill:30px;
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{
-    background:
-      radial-gradient(1100px 500px at 10% -10%, #e0e7ff 0%, transparent 60%),
-      radial-gradient(900px 500px at 100% 0%, #cffafe 0%, transparent 55%),
-      var(--bg);
+    background:var(--bg);
     color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
     line-height:1.5;
-    padding:32px 16px 64px;
+    padding:0 16px 72px;
   }
-  .wrap{max-width:880px;margin:0 auto}
+  .wrap{max-width:900px;margin:0 auto}
+
+  /* ---------- Верхняя полоса ---------- */
+  .topbar{
+    border-bottom:1px solid var(--line);
+    padding:18px 0;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;flex-wrap:wrap;
+  }
+  .logo{font-size:16px;font-weight:800;letter-spacing:.5px;text-transform:uppercase}
+  .logo b{color:var(--accent)}
+  .topbar .tag{
+    font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+    color:var(--muted);
+  }
 
   /* ---------- Шапка ---------- */
-  .hero{
-    display:flex;gap:24px;align-items:center;justify-content:space-between;
-    background:var(--card);border:1px solid var(--line);border-radius:22px;
-    padding:26px 28px;box-shadow:var(--shadow);
-  }
+  .head{padding:44px 0 28px}
   .eyebrow{
-    margin:0 0 6px;font-size:12px;font-weight:700;letter-spacing:.12em;
-    text-transform:uppercase;color:var(--accent);
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:1px;
+    text-transform:uppercase;color:var(--accent);margin:0 0 14px;
   }
-  .hero h1{margin:0 0 8px;font-size:26px;line-height:1.2;letter-spacing:-.02em}
-  .sub{margin:0;color:var(--muted);font-size:14px;max-width:44ch}
-  .dial{position:relative;flex:0 0 auto;width:118px;height:118px}
-  .dial svg{width:118px;height:118px;transform:rotate(-90deg)}
-  .dial circle{fill:none;stroke-width:10;stroke-linecap:round}
-  .dial-bg{stroke:var(--line)}
-  .dial-fg{
-    stroke:url(#grad);stroke-dasharray:326.7;stroke-dashoffset:326.7;
-    transition:stroke-dashoffset .45s cubic-bezier(.4,0,.2,1);
+  h1{
+    margin:0 0 14px;
+    font-size:52px;line-height:1.05;font-weight:800;
+    text-transform:uppercase;letter-spacing:-.01em;
   }
-  .dial-label{
-    position:absolute;inset:0;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;gap:2px;
-  }
-  .dial-label span{font-size:24px;font-weight:800;letter-spacing:-.03em}
-  .dial-label small{font-size:11px;color:var(--muted);font-weight:600}
+  h1 span{color:var(--accent);display:block}
+  .lead{margin:0;font-size:16px;color:var(--ink-2);max-width:60ch}
 
-  .bar{height:8px;border-radius:99px;background:#e9ecf5;margin:18px 0 24px;overflow:hidden}
-  .bar-fill{
-    height:100%;width:0%;border-radius:99px;
-    background:linear-gradient(90deg,var(--accent),var(--accent-2));
-    transition:width .45s cubic-bezier(.4,0,.2,1);
+  /* ---------- Поле компании ---------- */
+  .company{
+    margin:28px 0 0;
+    border:1px solid var(--line);
+    border-radius:var(--radius-card);
+    padding:22px 24px;
+    display:grid;grid-template-columns:1fr 260px;gap:20px;align-items:end;
   }
+  .company .lbl{
+    display:block;font-size:12px;font-weight:700;letter-spacing:.5px;
+    text-transform:uppercase;color:var(--muted);margin:0 0 8px;
+  }
+  .company input{
+    width:100%;font:inherit;font-size:17px;font-weight:700;color:var(--ink);
+    padding:12px 14px;border:1px solid var(--line-2);border-radius:var(--radius-card);
+    background:#fff;transition:border-color .18s,box-shadow .18s;
+  }
+  .company input::placeholder{font-weight:400;color:#b9b5b5}
+  .company input:focus{
+    outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft);
+  }
+  .company .field-note{grid-column:1 / -1;font-size:13px;color:var(--muted);margin:0}
+
+  /* ---------- Сводка: круговая оценка ---------- */
+  .summary{
+    margin:18px 0 34px;
+    border:1px solid var(--line);border-radius:var(--radius-card);
+    padding:26px 28px;
+    display:flex;align-items:center;gap:36px;flex-wrap:wrap;
+  }
+  .gauge{position:relative;flex:0 0 auto;width:168px;height:168px}
+  .gauge svg{display:block;width:168px;height:168px;transform:rotate(-90deg)}
+  .gauge circle{fill:none;stroke-width:12}
+  .gauge .g-bg{stroke:#f1f1f1}
+  .gauge .g-fg{
+    stroke:url(#gaugeGrad);stroke-linecap:round;
+    transition:stroke-dashoffset .55s cubic-bezier(.4,0,.2,1);
+    filter:drop-shadow(0 0 6px var(--accent-glow));
+  }
+  .gauge .g-center{
+    position:absolute;inset:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:4px;text-align:center;
+  }
+  .gauge .g-pct{
+    font-size:40px;font-weight:800;line-height:1;letter-spacing:-.03em;
+    font-variant-numeric:tabular-nums;
+  }
+  .gauge .g-sub{
+    font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+    color:var(--muted);font-variant-numeric:tabular-nums;
+  }
+  .summary .who{
+    flex:1;min-width:220px;border-left:1px solid var(--line);padding-left:36px;
+    align-self:stretch;display:flex;flex-direction:column;justify-content:center;
+  }
+  .summary .who .cap{
+    font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+    color:var(--muted);margin-bottom:6px;
+  }
+  .summary .who .val{font-size:19px;font-weight:700;word-break:break-word}
+  .summary .who .val.empty{color:var(--line-2);font-weight:400}
 
   /* ---------- Группы ---------- */
-  .group{margin-bottom:18px}
-  .group-head{
-    display:flex;align-items:center;gap:10px;margin:0 0 10px 4px;
+  .group{margin-bottom:30px}
+  .group-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px}
+  .step{
+    font-size:13px;font-weight:800;color:var(--accent);
+    font-variant-numeric:tabular-nums;
   }
   .group-head h2{
-    margin:0;font-size:13px;font-weight:800;letter-spacing:.08em;
-    text-transform:uppercase;color:#374151;
+    margin:0;font-size:14px;font-weight:800;letter-spacing:.5px;
+    text-transform:uppercase;
   }
   .group-head .rule{flex:1;height:1px;background:var(--line)}
   .group-head .tally{
-    font-size:11px;font-weight:700;color:var(--muted);background:#eef1f8;
-    padding:2px 8px;border-radius:99px;
+    font-size:12px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;
   }
 
   /* ---------- Пункт ---------- */
   .item{
     display:flex;gap:14px;align-items:flex-start;
-    background:var(--card);border:1px solid var(--line);border-radius:14px;
-    padding:14px 16px;margin-bottom:8px;cursor:pointer;
-    transition:border-color .2s, box-shadow .2s, transform .12s, background .2s;
+    border:1px solid var(--line);border-radius:var(--radius-card);
+    padding:15px 18px;margin-bottom:8px;cursor:pointer;
+    transition:border-color .18s,box-shadow .18s,background .18s,transform .12s;
   }
-  .item:hover{border-color:#c7cdf0;box-shadow:0 6px 18px rgba(79,70,229,.08)}
-  .item:active{transform:scale(.996)}
-  .item.done{background:#f6fdfa;border-color:#bbf0dc}
+  .item:hover{border-color:var(--lav);box-shadow:0 6px 20px rgba(50,50,50,.06)}
+  .item:active{transform:scale(.997)}
+  .item:focus-visible{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
   .box{
-    flex:0 0 auto;width:22px;height:22px;margin-top:1px;border-radius:7px;
-    border:2px solid #cbd2e4;background:#fff;position:relative;
-    transition:background .2s,border-color .2s;
+    flex:0 0 auto;width:22px;height:22px;margin-top:1px;border-radius:6px;
+    border:2px solid var(--line-2);background:#fff;position:relative;
+    transition:background .18s,border-color .18s;
   }
   .box::after{
     content:"";position:absolute;left:6.5px;top:2.5px;width:5px;height:10px;
-    border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) scale(.3);
-    opacity:0;transition:opacity .18s,transform .18s;
+    border:solid var(--ink);border-width:0 2.5px 2.5px 0;
+    transform:rotate(45deg) scale(.3);opacity:0;
+    transition:opacity .18s,transform .18s;
   }
-  .item.done .box{background:var(--ok);border-color:var(--ok)}
+  .item.done{background:var(--lav-soft);border-color:var(--lav)}
+  .item.done .box{background:var(--lav);border-color:var(--lav)}
   .item.done .box::after{opacity:1;transform:rotate(45deg) scale(1)}
-  .body{flex:1;min-width:0}
-  .title{font-size:15px;font-weight:650;letter-spacing:-.01em}
-  .item.done .title{color:#0f766e}
-  .hint{margin-top:3px;font-size:13px;color:var(--muted)}
-  .item.done .hint{color:#5b8d82}
-  .num{
-    flex:0 0 auto;font-size:11px;font-weight:800;color:#9aa3bb;
-    background:#f1f3fa;border-radius:8px;padding:3px 7px;margin-top:1px;
+  .item .body{flex:1;min-width:0}
+  .item .title{font-size:16px;font-weight:700;letter-spacing:-.01em}
+  .item .hint{margin-top:3px;font-size:13px;color:var(--muted)}
+  .item .num{
+    flex:0 0 auto;font-size:12px;font-weight:700;color:var(--muted);
+    font-variant-numeric:tabular-nums;margin-top:2px;
   }
-  .item.done .num{color:#0f766e;background:#e6f8f1}
+  .item.done .num{color:#7c6fc4}
+  .item.done .title{color:var(--ink)}
 
   /* ---------- Финал ---------- */
-  .done-banner{
-    display:none;margin-top:20px;padding:16px 20px;border-radius:16px;
-    background:linear-gradient(90deg,#d1fae5,#cffafe);border:1px solid #a7f3d0;
-    color:#065f46;font-weight:700;font-size:15px;text-align:center;
+  .done-strip{
+    display:none;margin-top:8px;padding:18px 22px;border-radius:var(--radius-card);
+    background:var(--accent-soft);border:1px solid var(--accent-glow);
+    color:var(--ink);font-size:14px;font-weight:800;letter-spacing:.5px;
+    text-transform:uppercase;
   }
-  .done-banner.show{display:block;animation:pop .35s ease}
+  .done-strip.show{display:block;animation:pop .3s ease}
   @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
-  .actions{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+  .actions{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}
   button{
-    font:inherit;font-weight:650;font-size:14px;cursor:pointer;
-    border-radius:12px;padding:11px 18px;border:1px solid var(--line);
-    background:#fff;color:var(--ink);transition:all .18s;
+    font:inherit;font-size:13px;font-weight:800;letter-spacing:.5px;
+    text-transform:uppercase;cursor:pointer;
+    border-radius:var(--radius-pill);padding:15px 30px;
+    border:1px solid var(--line-2);background:#fff;color:var(--ink);
+    transition:all .2s;
   }
-  button:hover{border-color:#c7cdf0;box-shadow:0 6px 16px rgba(17,24,39,.07)}
+  button:hover{border-color:var(--ink);box-shadow:0 6px 18px rgba(50,50,50,.08)}
   button.primary{
-    background:linear-gradient(90deg,var(--accent),var(--accent-2));
-    color:#fff;border:none;
+    background:var(--accent);color:#fff;border-color:var(--accent);
+    box-shadow:0 6px 18px var(--accent-glow);
   }
-  button.primary:hover{filter:brightness(1.05)}
+  button.primary:hover{background:#ef6200;border-color:#ef6200;box-shadow:0 10px 24px var(--accent-glow)}
 
-  @media (max-width:600px){
-    .hero{flex-direction:column;align-items:flex-start;padding:22px}
-    .hero h1{font-size:22px}
-    .dial{width:96px;height:96px}
-    .dial svg{width:96px;height:96px}
+  @media (max-width:680px){
+    h1{font-size:34px}
+    .company{grid-template-columns:1fr}
+    .summary{gap:22px;padding:20px;flex-direction:column;align-items:flex-start}
+    .summary .who{
+      border-left:none;padding-left:0;border-top:1px solid var(--line);
+      padding-top:20px;width:100%;align-self:auto;
+    }
+    .gauge{width:148px;height:148px}
+    .gauge svg{width:148px;height:148px}
+    .gauge .g-pct{font-size:34px}
   }
   @media print{
-    body{background:#fff;padding:0}
-    .actions,.bar{display:none}
-    .hero,.item{box-shadow:none;break-inside:avoid}
-    .item{cursor:default}
+    body{padding:0;color:#000}
+    .actions,.topbar .tag{display:none}
+    .company input{border:none;padding:0;font-size:15px}
+    .item{break-inside:avoid;box-shadow:none}
+    .gauge .g-fg{filter:none}
   }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <header class="hero">
-    <div class="hero-text">
-      <p class="eyebrow">Контроль качества аккаунта</p>
-      <h1>Чек-лист проверки аккаунта</h1>
-      <p class="sub">Отмечайте выполненные пункты — прогресс сохраняется автоматически в этом браузере.</p>
-    </div>
-    <div class="dial">
-      <svg viewBox="0 0 120 120" aria-hidden="true">
-        <defs>
-          <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#4f46e5"/>
-            <stop offset="100%" stop-color="#06b6d4"/>
-          </linearGradient>
-        </defs>
-        <circle class="dial-bg" cx="60" cy="60" r="52"></circle>
-        <circle class="dial-fg" id="dialFg" cx="60" cy="60" r="52"></circle>
-      </svg>
-      <div class="dial-label">
-        <span id="pct">0%</span>
-        <small id="count">0 из 10</small>
-      </div>
-    </div>
+  <div class="topbar">
+    <div class="logo">MD<b>-</b>Insight <b>·</b> внутренний контроль</div>
+    <div class="tag">Проверка аккаунтов маркетплейсов</div>
+  </div>
+
+  <header class="head">
+    <p class="eyebrow">Контроль качества</p>
+    <h1><span>Чек-лист</span>проверки аккаунта</h1>
+    <p class="lead">Отметьте выполненные пункты — прогресс и название компании сохраняются в этом браузере. Готовый чек-лист можно распечатать или сохранить в PDF.</p>
   </header>
 
-  <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+  <section class="company">
+    <div>
+      <label class="lbl" for="companyInput">Название компании</label>
+      <input id="companyInput" type="text" autocomplete="off" placeholder="Например: ООО «Ромашка»">
+    </div>
+    <div>
+      <label class="lbl" for="checklistDate">Дата проверки</label>
+      <input id="checklistDate" type="date">
+    </div>
+    <p class="field-note">Название подставляется в заголовок страницы и в печатную версию.</p>
+  </section>
+
+  <section class="summary">
+    <div class="gauge">
+      <svg viewBox="0 0 168 168" role="img" aria-labelledby="gaugeTitle">
+        <title id="gaugeTitle">Готовность проверки</title>
+        <defs>
+          <linearGradient id="gaugeGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#ff6b00"/>
+            <stop offset="100%" stop-color="#ff9a4d"/>
+          </linearGradient>
+        </defs>
+        <circle class="g-bg" cx="84" cy="84" r="76"></circle>
+        <circle class="g-fg" id="gaugeArc" cx="84" cy="84" r="76"></circle>
+      </svg>
+      <div class="g-center">
+        <div class="g-pct" id="pctNum">0%</div>
+        <div class="g-sub"><span id="doneNum">0</span> из <span id="totalNum">10</span></div>
+      </div>
+    </div>
+    <div class="who">
+      <div class="cap">Проверяемая компания</div>
+      <div class="val empty" id="whoVal">не указана</div>
+    </div>
+  </section>
 
   <div id="groups"></div>
 
-  <div class="done-banner" id="doneBanner">Проверка завершена: все пункты отмечены</div>
+  <div class="done-strip" id="doneStrip">Проверка завершена — все пункты отмечены</div>
 
   <div class="actions">
-    <button class="primary" id="printBtn">Печать / PDF</button>
+    <button class="primary" id="printBtn">Распечатать →</button>
     <button id="resetBtn">Сбросить отметки</button>
   </div>
 </div>
@@ -224,7 +317,7 @@ const DATA = [
     group: "Качество и рейтинг",
     items: [
       { t: "Товары без блокировок, дублей и просадки рейтинга",
-        h: "Проверьте: нет заблокированных позиций и дублей, рейтинг не занижен." }
+        h: "Нет заблокированных позиций и дублей, рейтинг не занижен." }
     ]
   },
   {
@@ -236,32 +329,42 @@ const DATA = [
   }
 ];
 
-const KEY = "account-check-v1";
-const items = [];
-DATA.forEach(g => g.items.forEach(i => items.push(i)));
-const total = items.length;
-
+const KEY = "account-check-v2";
 const root = document.getElementById("groups");
-const dialFg = document.getElementById("dialFg");
-const barFill = document.getElementById("barFill");
-const pctEl = document.getElementById("pct");
-const countEl = document.getElementById("count");
-const banner = document.getElementById("doneBanner");
-const CIRC = 2 * Math.PI * 52;
+const doneNum = document.getElementById("doneNum");
+const pctNum = document.getElementById("pctNum");
+const gaugeArc = document.getElementById("gaugeArc");
+const totalNum = document.getElementById("totalNum");
+const R = 76;
+const CIRC = 2 * Math.PI * R;
+const strip = document.getElementById("doneStrip");
+const whoVal = document.getElementById("whoVal");
+const companyInput = document.getElementById("companyInput");
+const dateInput = document.getElementById("checklistDate");
 
 let state = {};
-try { state = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { state = {}; }
+let meta = {};
+try {
+  state = JSON.parse(localStorage.getItem(KEY) || "{}") || {};
+  meta = JSON.parse(localStorage.getItem(KEY + "-meta") || "{}") || {};
+} catch (e) { state = {}; meta = {}; }
 
 let index = 0;
+let startIdx = 0;
 DATA.forEach((g, gi) => {
   const wrap = document.createElement("section");
   wrap.className = "group";
 
   const head = document.createElement("div");
   head.className = "group-head";
-  head.innerHTML = '<h2>' + g.group + '</h2><div class="rule"></div><span class="tally" data-tally="' + gi + '"></span>';
+  head.innerHTML =
+    '<span class="step">' + String(gi + 1).padStart(2, "0") + '</span>' +
+    '<h2>' + g.group + '</h2>' +
+    '<div class="rule"></div>' +
+    '<span class="tally" data-tally="' + gi + '"></span>';
   wrap.appendChild(head);
 
+  index = startIdx;
   g.items.forEach(it => {
     const id = index++;
     const row = document.createElement("div");
@@ -271,59 +374,85 @@ DATA.forEach((g, gi) => {
     row.setAttribute("aria-checked", "false");
     row.dataset.id = id;
     row.innerHTML =
-      '<div class="box"></div>' +
-      '<div class="body"><div class="title">' + it.t + '</div><div class="hint">' + it.h + '</div></div>' +
-      '<div class="num">' + String(id + 1).padStart(2, "0") + '</div>';
+      '<span class="box"></span>' +
+      '<span class="body"><span class="title">' + it.t + '</span><span class="hint">' + it.h + '</span></span>' +
+      '<span class="num">' + String(id + 1).padStart(2, "0") + '</span>';
 
-    const toggle = () => {
-      state[id] = !state[id];
-      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
-      render();
-    };
+    const toggle = () => { state[id] = !state[id]; persist(); render(); };
     row.addEventListener("click", toggle);
     row.addEventListener("keydown", e => {
       if (e.key === " " || e.key === "Enter") { e.preventDefault(); toggle(); }
     });
-
     wrap.appendChild(row);
   });
-
+  startIdx = index;
   root.appendChild(wrap);
 });
 
+const TOTAL = startIdx;
+
+function persist(){
+  try {
+    localStorage.setItem(KEY, JSON.stringify(state));
+    localStorage.setItem(KEY + "-meta", JSON.stringify(meta));
+  } catch (e) {}
+}
+
 function render(){
   let done = 0;
-  root.querySelectorAll('.item[data-id]').forEach(r => {
+  root.querySelectorAll(".item").forEach(r => {
     const on = !!state[r.dataset.id];
     r.classList.toggle("done", on);
     r.setAttribute("aria-checked", on ? "true" : "false");
     if (on) done++;
   });
 
-  let start = 0;
+  let s = 0;
   DATA.forEach((g, gi) => {
-    const gDone = g.items.reduce((a, _, k) => a + (state[start + k] ? 1 : 0), 0);
-    start += g.items.length;
-    const tally = root.querySelector('[data-tally="' + gi + '"]');
-    if (tally) tally.textContent = gDone + "/" + g.items.length;
+    const gDone = g.items.reduce((a, _, k) => a + (state[s + k] ? 1 : 0), 0);
+    s += g.items.length;
+    const t = root.querySelector('[data-tally="' + gi + '"]');
+    if (t) t.textContent = gDone + "/" + g.items.length;
   });
 
-  const pct = Math.round(done / total * 100);
-  pctEl.textContent = pct + "%";
-  countEl.textContent = done + " из " + total;
-  barFill.style.width = pct + "%";
-  dialFg.style.strokeDashoffset = CIRC - (CIRC * done / total);
-  banner.classList.toggle("show", done === total);
+  const pct = TOTAL ? Math.round(done / TOTAL * 100) : 0;
+  doneNum.textContent = done;
+  totalNum.textContent = TOTAL;
+  pctNum.textContent = pct + "%";
+  gaugeArc.style.strokeDasharray = CIRC;
+  gaugeArc.style.strokeDashoffset = CIRC - CIRC * pct / 100;
+  strip.classList.toggle("show", done === TOTAL && TOTAL > 0);
+
+  const name = (companyInput.value || "").trim();
+  whoVal.textContent = name || "не указана";
+  whoVal.classList.toggle("empty", !name);
+  document.title = (name ? name + " — " : "") + "Чек-лист проверки аккаунта";
 }
+
+function loadMeta(){
+  companyInput.value = meta.company || "";
+  dateInput.value = meta.date || "";
+  render();
+}
+
+companyInput.addEventListener("input", () => {
+  meta.company = companyInput.value;
+  persist();
+  render();
+});
+dateInput.addEventListener("change", () => {
+  meta.date = dateInput.value;
+  persist();
+});
 
 document.getElementById("resetBtn").addEventListener("click", () => {
   state = {};
-  try { localStorage.setItem(KEY, "{}"); } catch (e) {}
+  persist();
   render();
 });
 document.getElementById("printBtn").addEventListener("click", () => window.print());
 
-render();
+loadMeta();
 </script>
 </body>
 </html>
